@@ -199,7 +199,7 @@ else
 
 # linux/mingw: just zip the package contents
 
-cd $app
+cd $name
 zip -r $pkgname.zip $app
 mv $pkgname.zip ..
 
