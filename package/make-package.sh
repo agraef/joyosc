@@ -131,10 +131,9 @@ else
     exit 1
 fi
 
-name=joyosc
-app=$name-$version
-pkgname=$name-$version-$os-$arch
-targetdir=$build/$name/$app
+app=joyosc
+pkgname=$app-$version-$os-$arch
+targetdir=$build/$app/$app
 
 # install to staging area
 rm -rf $build
@@ -180,16 +179,16 @@ if [ "$os" == "macos" ]; then
 
 # fix up the lib dependencies
 for lib in $libs; do
-    install_name_tool -change $lib @executable_path/$(basename $lib) $name/$app/bin/lsjs
-    install_name_tool -change $lib @executable_path/$(basename $lib) $name/$app/bin/joyosc
+    install_name_tool -change $lib @executable_path/$(basename $lib) $app/$app/bin/lsjs
+    install_name_tool -change $lib @executable_path/$(basename $lib) $app/$app/bin/joyosc
 done
 
 # self-sign app
-codesign --deep --sign "$signatureid" $name/$app/Joyosc.app
+codesign --deep --sign "$signatureid" $app/$app/Joyosc.app
 
 # create dmg
 rm -f $app.dmg
-hdiutil create -volname $app -srcfolder $name $app.dmg
+hdiutil create -volname $app -srcfolder $app $app.dmg
 codesign --deep --sign "$signatureid" $app.dmg
 
 # zip
@@ -199,7 +198,7 @@ else
 
 # linux/mingw: just zip the package contents
 
-cd $name
+cd $app
 zip -r $pkgname.zip $app
 mv $pkgname.zip ..
 
